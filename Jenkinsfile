@@ -161,9 +161,9 @@ pipeline {
                                 . venv/bin/activate
                                 pip install --upgrade pip
                                 pip install -r requirements.txt || true
-                                python scripts/compare_cfg.py \
+                                python utils/check_cfg_params.py \
                                     --input_files "${CFG_CHANGED_FILES}" \
-                                    --default_file scripts/default.cfg
+                                    --default_file test_data/expected.cfg
                             '''
                         } catch (err) {
                             echo "❌ CFG validation failed"
