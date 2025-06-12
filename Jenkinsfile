@@ -207,7 +207,8 @@ pipeline {
                             echo "CFG changes detected. Proceeding to compare values..."
 
                             // Ensure main branch is available for comparison
-                            sh 'git fetch origin main'
+                            sh 'git fetch origin main:refs/remotes/origin/main'
+                            // sh 'git fetch origin main'
 
                             def cfgFiles = sh(script: 'git diff --name-only HEAD~1', returnStdout: true).trim().split('\n')
                             def mismatchedFiles = []
