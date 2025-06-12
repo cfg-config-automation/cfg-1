@@ -1,4 +1,5 @@
- 
+
+
 // pipeline {
 //     agent any
 
@@ -6,11 +7,11 @@
 //         stage('Check for CFG Changes') {
 //             steps {
 //                 script {
-//                     // Start GitHub Check for this stage using withChecks
 //                     withChecks('CFG Change Detection') {
 //                         try {
 //                             echo "Starting CFG file change detection..."
-//                             // Get files changed in the last commit
+
+//                             // Get list of files changed in the last commit
 //                             def changedFiles = sh(script: 'git diff --name-only HEAD~1', returnStdout: true).trim()
 //                             def cfgFilesChanged = false
 
@@ -27,7 +28,7 @@
 //                             }
 //                         } catch (Exception e) {
 //                             echo "Error during CFG change detection: ${e.message}"
-//                             error "CFG change detection failed: ${e.message}" // Fails the pipeline and GitHub Check
+//                             error "CFG change detection failed: ${e.message}"
 //                         }
 //                     }
 //                 }
@@ -35,25 +36,28 @@
 //         }
 
 //         stage('Compare CFG Values') {
-//             // This stage only runs if CFG_CHANGES_DETECTED is true
 //             when {
 //                 environment name: 'CFG_CHANGES_DETECTED', value: 'true'
 //             }
 //             steps {
 //                 script {
-//                     // Start GitHub Check for this stage using withChecks
 //                     withChecks('CFG Value Comparison') {
 //                         try {
 //                             echo "CFG changes detected. Proceeding to compare values..."
+
+//                             // Ensure main branch is available for comparison
+//                             sh 'git fetch origin main'
 
 //                             def cfgFiles = sh(script: 'git diff --name-only HEAD~1', returnStdout: true).trim().split('\n')
 //                             def mismatchedFiles = []
 
 //                             for (file in cfgFiles) {
 //                                 if (file.endsWith('.cfg')) {
+//                                     echo "Comparing ${file} with main branch version..."
+
 //                                     def currentContent = readFile(file).trim()
 //                                     def expectedContent = sh(script: "git show origin/main:${file}", returnStdout: true).trim()
-                                    
+
 //                                     if (currentContent != expectedContent) {
 //                                         mismatchedFiles << file
 //                                     }
@@ -68,7 +72,7 @@
 
 //                         } catch (Exception e) {
 //                             echo "Error during CFG value comparison: ${e.message}"
-//                             error "CFG value comparison failed: ${e.message}" // Fails the pipeline and GitHub Check
+//                             error "CFG value comparison failed: ${e.message}"
 //                         }
 //                     }
 //                 }
@@ -76,7 +80,6 @@
 //         }
 //     }
 // }
-
 
 
 pipeline {
@@ -125,7 +128,8 @@ pipeline {
                             echo "CFG changes detected. Proceeding to compare values..."
 
                             // Ensure main branch is available for comparison
-                            sh 'git fetch origin main'
+                            sh 'git fetch origin main:refs/remotes/origin/main'
+                            // sh 'git fetch origin main'
 
                             def cfgFiles = sh(script: 'git diff --name-only HEAD~1', returnStdout: true).trim().split('\n')
                             def mismatchedFiles = []
@@ -159,3 +163,4 @@ pipeline {
         }
     }
 }
+// fixed with origin/main
