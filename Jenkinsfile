@@ -160,8 +160,6 @@ pipeline {
                                 set -e
                                 python3 -m venv venv
                                 . venv/bin/activate
-                                pip install --upgrade pip
-                                pip install -r requirements.txt || true
                                 python utils/check_cfg_params.py \
                                     --input_files "${CFG_CHANGED_FILES}" \
                                     --default_file test_data/expected.cfg
