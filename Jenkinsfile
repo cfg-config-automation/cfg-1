@@ -93,8 +93,8 @@ pipeline {
         stage('Check for CFG Changes') {
             steps {
                 script {
-                    // Start GitHub Check for this stage
-                    githubChecks('CFG Change Detection') {
+                    // Start GitHub Check for this stage using withChecks
+                    withChecks('CFG Change Detection') {
                         try {
                             echo "Starting CFG file change detection..."
                             // Get files changed in the last commit
@@ -128,8 +128,8 @@ pipeline {
             }
             steps {
                 script {
-                    // Start GitHub Check for this stage
-                    githubChecks('CFG Value Comparison') {
+                    // Start GitHub Check for this stage using withChecks
+                    withChecks('CFG Value Comparison') {
                         try {
                             echo "CFG changes detected. Proceeding to compare values."
                             // --- YOUR CUSTOM CFG COMPARISON LOGIC GOES HERE ---
