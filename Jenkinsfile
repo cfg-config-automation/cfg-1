@@ -128,7 +128,7 @@ pipeline {
                             echo "📄 Detecting changed .cfg files..."
                             sh "git fetch origin main"
 
-                            def changedCfgFiles = sh(script: "git diff --name-only origin/main...HEAD | grep '\\.cfg$' || true", returnStdout: true).trim()
+                            def changedCfgFiles = sh(script: "git diff --name-only origin/main...HEAD | grep '\\.cfg\\$' || true", returnStdout: true).trim()
                             
                             if (!changedCfgFiles) {
                                 echo "✅ No .cfg files changed. Skipping comparison stage."
