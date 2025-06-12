@@ -104,7 +104,7 @@ pipeline {
                         error("Unsupported event: Could not detect branch from environment")
                     }
 
-                    def allowedBranches = ['main', 'automation1', 'automation2']
+                    def allowedBranches = ['main', 'branch1']
                     if (!allowedBranches.contains(BRANCH_NAME)) {
                         echo "⚠️ Skipping branch ${BRANCH_NAME} as it is not in the allowed list."
                         currentBuild.result = 'SUCCESS'
